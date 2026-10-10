@@ -51,9 +51,12 @@ Financial Audit Data (776 Firms, 22 Features)
 ## Target Leakage Prevention
 
 In the raw UCI Audit dataset, the statutory audit metric `Audit_Risk` is computed as:
-$$\text{Audit\_Risk} = \text{Inherent\_Risk} \times \text{CONTROL\_RISK} \times \text{Detection\_Risk}$$
 
-Whenever $\text{Audit\_Risk} > 1.0$, the firm is labeled $\text{Risk} = 1$ ($100\%$ mathematical determinism). Feeding `Audit_Risk` or direct algebraic combinations into ML models creates trivial target leakage.
+```text
+Audit_Risk = Inherent_Risk × CONTROL_RISK × Detection_Risk
+```
+
+Whenever `Audit_Risk > 1.0`, the firm is labeled `Risk = 1` (100% mathematical determinism). Feeding `Audit_Risk` or direct algebraic combinations into ML models creates trivial target leakage.
 
 **Prevention Strategy:**
 * Direct formulaic columns (`Audit_Risk`, `Inherent_Risk`, `CONTROL_RISK`, `Detection_Risk`) were strictly excluded from the feature matrix.
@@ -65,8 +68,8 @@ Whenever $\text{Audit\_Risk} > 1.0$, the firm is labeled $\text{Risk} = 1$ ($100
 
 All models were evaluated across **Stratified 5-Fold Cross-Validation** over all 776 corporate entities to prevent single-split overfitting and establish inductive generalization:
 
-| Model | Paradigm | Accuracy ($\text{Mean} \pm \text{Std}$) | Precision | Recall | F1-Score | PR-AUC | ROC-AUC |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| Model | Paradigm | Accuracy (Mean ± Std) | Precision | Recall | F1-Score | PR-AUC | ROC-AUC |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Proposed Hybrid Model** | **Hybrid** | **98.84% ± 0.48%** | **0.9838 ± 0.0102** | **0.9869 ± 0.0066** | **0.9853 ± 0.0061** | **0.9988 ± 0.0012** | **0.9993 ± 0.0007** |
 | XGBoost | Supervised | 98.97% ± 0.65% | 0.9870 ± 0.0121 | 0.9869 ± 0.0066 | 0.9869 ± 0.0083 | 0.9958 ± 0.0048 | 0.9976 ± 0.0021 |
 | Random Forest | Supervised | 98.58% ± 0.48% | 0.9869 ± 0.0066 | 0.9770 ± 0.0167 | 0.9818 ± 0.0063 | 0.9990 ± 0.0010 | 0.9993 ± 0.0007 |
@@ -76,8 +79,8 @@ All models were evaluated across **Stratified 5-Fold Cross-Validation** over all
 | Local Outlier Factor (LOF) | Unsupervised | 60.18% ± 1.05% | 0.2000 ± 0.4000 | 0.0066 ± 0.0131 | 0.0127 ± 0.0254 | 0.3985 ± 0.0281 | 0.5363 ± 0.0237 |
 
 ### Key Research Findings
-1. **Overfitting Mitigation:** Standard deviations across all 5 folds remained below $\pm 0.7\%$, verifying that the architecture generalizes consistently without memorizing specific data splits.
-2. **Fraud Detection Sensitivity:** The Proposed Hybrid Model achieved an average Recall of **98.69% ± 0.66%** and an $F_2$-Score of **0.9862 ± 0.0056**, catching over 98.6% of fraudulent companies with a modest false alarm rate (~1.6%).
+1. **Overfitting Mitigation:** Standard deviations across all 5 folds remained below ±0.7%, verifying that the architecture generalizes consistently without memorizing specific data splits.
+2. **Fraud Detection Sensitivity:** The Proposed Hybrid Model achieved an average Recall of **98.69% ± 0.66%** and an F₂-Score of **0.9862 ± 0.0056**, catching over 98.6% of fraudulent companies with a modest false alarm rate (~1.6%).
 3. **Unsupervised Outlier Separation:** Without any ground-truth labels, **Isolation Forest** attained an outstanding **0.9857 ROC-AUC** and **0.9759 PR-AUC**, demonstrating strong utility for initial audit screening in label-scarce environments.
 
 ---

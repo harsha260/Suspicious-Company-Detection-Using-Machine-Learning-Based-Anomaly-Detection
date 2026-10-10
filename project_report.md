@@ -29,8 +29,12 @@ The dataset contains 776 company audit records across 27 quantitative and catego
 
 ### Critical Leakage Prevention
 In the raw dataset, `Audit_Risk` is an exact mathematical product computed by auditors:
-$$\text{Audit\_Risk} = \text{Inherent\_Risk} \times \text{CONTROL\_RISK} \times \text{Detection\_Risk}$$
-Whenever $\text{Audit\_Risk} > 1.0$, the company is labeled $\text{Risk} = 1$. Feeding `Audit_Risk` directly into ML algorithms produces an artificial 100% accuracy without learning underlying financial anomalies.
+
+```text
+Audit_Risk = Inherent_Risk × CONTROL_RISK × Detection_Risk
+```
+
+Whenever `Audit_Risk > 1.0`, the company is labeled `Risk = 1`. Feeding `Audit_Risk` directly into ML algorithms produces an artificial 100% accuracy without learning underlying financial anomalies.
 
 **Our Preprocessing Strategy:**
 - Excluded deterministic audit calculations (`Audit_Risk`, `Inherent_Risk`, `CONTROL_RISK`, `Detection_Risk`).
